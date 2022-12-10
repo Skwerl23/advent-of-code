@@ -38,5 +38,7 @@ foreach ($line in $data) {
         $count++
     }
 }
+"Answer 1:"
 $strength
+"Answer 2:"
 0..5 | % {($text[$_] -join '')}
