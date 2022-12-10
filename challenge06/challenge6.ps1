@@ -1,5 +1,5 @@
 ﻿$signal = cat C:\Tools\advent2022\challenge6.txt
-$gap = 14
+$gap = 4
 foreach ($num in 0..$signal.Length) {
     $list = @()
     foreach ($i in 0..($gap-1)) {
