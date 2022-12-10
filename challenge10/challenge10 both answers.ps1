@@ -1,10 +1,10 @@
-﻿$data = Get-Content C:\Tools\advent2022\challenge10.txt
+$data = Get-Content C:\Tools\advent2022\challenge10\challenge10.txt
 
 $x = 1
 $count= 1
 $strength = 0
 $row = 0
-$text= 1..6 | % { ,(".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".") }
+$text= 1..6 | % { ,(1..40 | % {"."}) }
 
 foreach ($line in $data) {
         $a = $line.split(' ')[0]
@@ -25,7 +25,7 @@ foreach ($line in $data) {
             $row = $row %6
         }
         if ([math]::Abs($x-(($count-1)%40)) -le 1) {
-            $text[$row][$count%40] = "#"
+            $text[$row][($count)%40] = "#"
         }
 
         if (($count+20) % 40 -eq 0) {
@@ -38,7 +38,5 @@ foreach ($line in $data) {
         $count++
     }
 }
-"Answer 1:"
 $strength
-"Answer 2:"
 0..5 | % {($text[$_] -join '')}
