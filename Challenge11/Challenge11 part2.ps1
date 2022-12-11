@@ -49,6 +49,6 @@ foreach ($round in 1..10000) {
         }
     }
 }  
-    $ans  = $monkeyInspections.GetEnumerator() | sort value -Descending | select -first 2
-    $total = [double]$ans.value[0]*$ans.value[1] 
-    $total
+$ans  = $monkeyInspections.GetEnumerator() | sort value -Descending | select -first 2
+$total = [double]$ans.value[0]*$ans.value[1] 
+$total
