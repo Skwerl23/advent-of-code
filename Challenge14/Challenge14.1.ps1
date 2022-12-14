@@ -1,13 +1,9 @@
-﻿$data = Get-Content C:\Tools\advent2022\challenge14.txt
-### NOTE!!! ####
-#Doesn't get exact answer
-#But it's close enough lol. might fix later
+$data = Get-Content C:\Tools\advent2022\challenge14.txt
 
 #$data = @(
 #"498,4 -> 498,6 -> 496,6"
 #"503,4 -> 502,4 -> 502,9 -> 494,9"
 #)
-$minx = [int]::MaxValue
 $maxx = [int]::MinValue
 $miny = [int]::MaxValue
 $maxy = [int]::MinValue
@@ -25,7 +21,6 @@ foreach ($line in $data) {
             foreach ($y in $last[0]..$current[0]) {
                 foreach ($x in $last[1]..$current[1]) {
                     $rock += "$x,$y"
-                    $minx = [math]::Min($x, $minx)
                     $maxx = [math]::Max($x, $maxx)
                     $miny = [math]::Min($y, $miny)
                     $maxy = [math]::Max($y, $maxy)
@@ -39,12 +34,12 @@ foreach ($line in $data) {
     
     }
 }
-$minx -=2
+$minx =0
 $miny -=2
 $maxx +=2
 $maxy +=2
 $fallx = 0
-$fally = 500-$miny-7
+$fally = 500-$miny
 $gridLine = @($miny..$maxy | % {"."})
 $grid = [System.Collections.ArrayList]@()
 foreach ($x in $minx..$maxx) {
@@ -85,22 +80,19 @@ $countold = $count
                 $move = $true
                 }
                 
-    $count++
-
+                if ($move) {
+                    $grid[$i][$j] = "."
+            
+                }
             }
 
-            if ($grid[-1] -match "o"){$run = $false}
+            if ($grid[-1] -match "o"){$run = $false;$count--}
         }
     }
+    $count++
 #    if ($grid[$i] -match "o" ) {
 #    $count--
 #    }
-
-$temp = foreach ($line in $grid) {
-    $line -join ''
-}
-clear
-$temp
 
 }
 $temp = foreach ($line in $grid) {
