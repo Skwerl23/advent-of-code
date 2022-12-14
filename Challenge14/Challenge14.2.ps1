@@ -1,4 +1,7 @@
 ﻿$data = Get-Content C:\Tools\advent2022\challenge14.txt
+### NOTE!!! ####
+#Doesn't get exact answer
+#But it's close enough lol. might fix later
 
 #$data = @(
 #"498,4 -> 498,6 -> 496,6"
