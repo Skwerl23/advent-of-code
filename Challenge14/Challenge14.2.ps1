@@ -39,10 +39,10 @@ foreach ($line in $data) {
     
     }
 }
-$minx -=2
+$minx =330
 $miny =0
 $maxx +=2
-$maxy =1000
+$maxy =670
 $fallx = 0
 $fally = 500-$miny-7
 $gridLine = @($miny..$maxy | % {"."})
