@@ -1,13 +1,9 @@
 $data = Get-Content C:\Tools\advent2022\challenge14.txt
 
-#$data = @(
-#"498,4 -> 498,6 -> 496,6"
-#"503,4 -> 502,4 -> 502,9 -> 494,9"
-#)
 $maxx = [int]::MinValue
 $miny = [int]::MaxValue
 $maxy = [int]::MinValue
-$rock = @()
+$rock = [System.Collections.ArrayList]@()
 foreach ($line in $data) {
     
     $current = $null
@@ -20,7 +16,7 @@ foreach ($line in $data) {
         if ($last) {
             foreach ($y in $last[0]..$current[0]) {
                 foreach ($x in $last[1]..$current[1]) {
-                    $rock += "$x,$y"
+                    $rock.add("$x,$y") | out-null
                     $maxx = [math]::Max($x, $maxx)
                     $miny = [math]::Min($y, $miny)
                     $maxy = [math]::Max($y, $maxy)
@@ -56,7 +52,6 @@ foreach ($x in $minx..$maxx) {
 $run = $true
 $count = 0
 while ($run) {
-#$gridold = $grid.Clone()
 $countold = $count
     if ($grid[$fallx][$fally] -eq '.') {
         $grid[$fallx][$fally] = "o"
@@ -86,13 +81,10 @@ $countold = $count
                 }
             }
 
-            if ($grid[-1] -match "o"){$run = $false;$count--}
+            if ($grid[-1] -contains "o"){$run = $false;$finalcount = $count}
         }
     }
     $count++
-#    if ($grid[$i] -match "o" ) {
-#    $count--
-#    }
 
 }
 $temp = foreach ($line in $grid) {
@@ -100,3 +92,4 @@ $temp = foreach ($line in $grid) {
 }
 clear
 $temp
+$finalcount
