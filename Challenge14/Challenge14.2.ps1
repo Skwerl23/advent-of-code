@@ -1,16 +1,7 @@
 ﻿$data = Get-Content C:\Tools\advent2022\challenge14.txt
-### NOTE!!! ####
-#Doesn't get exact answer
-#But it's close enough lol. might fix later
 
-#$data = @(
-#"498,4 -> 498,6 -> 496,6"
-#"503,4 -> 502,4 -> 502,9 -> 494,9"
-#)
-$minx = [int]::MaxValue
 $maxx = [int]::MinValue
-$miny = [int]::MaxValue
-$maxy = [int]::MinValue
+
 $rock = @()
 foreach ($line in $data) {
     
