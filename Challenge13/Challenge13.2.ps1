@@ -3,25 +3,24 @@
 function Compare-Arrays($left, $right) {
     $leftParts = $left.Split(",")
     $rightParts = $right.Split(",")
-
     for ($i = 0; $i -lt $leftParts.Length; $i++) {
-        $l = $leftParts[$i]
-        $r = $rightParts[$i]
+        $left = $leftParts[$i]
+        $right = $rightParts[$i]
 
-        $dl = ($l.length - $l.replace("[",'').length) - ($l.length - $l.replace("]",'').length)
-        $dr = ($r.length - $r.replace("[",'').length) - ($r.length - $r.replace("]",'').length)
+        $depthLeft = ($left.length - $left.replace("[",'').length) - ($left.length - $left.replace("]",'').length)
+        $depthRight = ($right.length - $right.replace("[",'').length) - ($right.length - $right.replace("]",'').length)
 
-        $l = $l.Trim("[]")
-        $r = $r.Trim("[]")
+        $left = $left.Trim("[]")
+        $right = $right.Trim("[]")
 
-        if ($l -ne $r) {
-            if ($l -and $r) {
-                return [int]$l - [int]$r
+        if ($left -ne $right) {
+            if ($left -and $right) {
+                return [int]$left - [int]$right
             }
-            return ([bool]$l) - ([bool]$r)
+            return ([bool]$left) - ([bool]$right)
         }
-        if ($dl -ne $dr) {
-            return $dl - $dr
+        if ($depthLeft -ne $depthRight) {
+            return $depthLeft - $depthRight
         }
     }
     return $left.Length - $right.Length
@@ -51,7 +50,8 @@ while ($notSorted) {
     
 }
 
-$a = $data.IndexOf($add1)+1
-$b = $data.IndexOf($add2)+1
+$a = [int]$data.IndexOf($add1)+1
+$b = [int]$data.IndexOf($add2)+1
+
 "answer= " + ($a * $b)
 
