@@ -60,7 +60,7 @@ function DepthFirstSearch($tree, $startNode, $timeRemaining) {
 
     # Recursive function for traversing the tree
     function Traverse($node, $time, $pressure) {
-        if ($time -le 5) {return}
+        if ($time -le 1) {return}
         # Add the current node to the path
 #        $$script:visitedPath.Add($node)
         
