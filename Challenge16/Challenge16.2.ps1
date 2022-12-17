@@ -13,7 +13,7 @@ $data = @("Valve AA has flow rate=0; tunnels lead to valves DD, II, BB"
 "Valve JJ has flow rate=21; tunnel leads to valve II")
 #>
 ##example line of input: Valve CX has flow rate=3; tunnels lead to valves ZN, AM, OE, YS, QE
-
+### This code takes longer than I'd like, but it completes
 $startValve = "AA"
 $valves = @{}
 foreach ($valve in $data) {
