@@ -1,4 +1,4 @@
-
+### Initial Setup
 $data = cat C:\Tools\advent2022\challenge18.txt
 <#
 $data = @("2,2,2"
@@ -37,6 +37,8 @@ foreach ($a in 0..20) {
     }
 }
 
+
+### Find answer to problem one, just calculate surface area and remove adjacent air surfaces
 foreach ($offset in $gridOffsets) {
     $points = $offset.split(',')
     $ox = [int]$points[0]
@@ -55,6 +57,8 @@ foreach ($offset in $gridOffsets) {
 "Part 1 Answer = $surfaceArea"
 $airPockets = $airPockets | select -Unique
 
+
+###Now go and find anything that is surrounded on all 6 sides and name it an inside pocket otherwise name it outside
 
 $insidePockets = @()
 $outsidePockets = @()
@@ -103,6 +107,8 @@ foreach ($pocket in $airPockets) {
 
 }
 
+#
+
 $insidePockets = $insidePockets | select -Unique
 $outsidePockets = $outsidePockets | select -Unique
 #
@@ -131,35 +137,6 @@ while ($insidePockets.count -ne $insideCount) {
         $outsidePockets += $pocket
     }
 }
-
-
-$insideCount = $insidePockets.Count + 1
-while ($insidePockets.count -ne $insideCount) {
-    $insideCount = $insidePockets.Count
-    $temppockets = @()
-    foreach ($offset in $gridOffsets) {
-        $points = $offset.split(',')
-        $ox = [int]$points[0]
-        $oy = [int]$points[1]
-        $oz = [int]$points[2]
-
-        foreach ($line in $airPockets) {
-            [int]$x,[int]$y,[int]$z = $line.split(',')
-
-
-            $checkPoint = "$($ox+$x),$($oy+$y),$($oz+$z)"
-
-            if ($insidePockets -contains $checkPoint) {
-                $temppockets += $line
-            }
-        }
-    }
-    foreach ($pocket in $temppockets) {
-        $insidePockets += $pocket
-    }
-    $insidePockets = $insidePockets | select -unique
-}
-
 
 $airSurfaceArea = $insidePockets.count * 6
 foreach ($offset in $gridOffsets) {
