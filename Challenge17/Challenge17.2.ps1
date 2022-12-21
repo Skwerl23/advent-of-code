@@ -13,8 +13,18 @@ function get-rock($rockNumber, [int]$x, [int]$y) {
     }
 
 }
-$stopRock = 2022
 
+$stopRock = 1000000000000 
+#$stopRock = 2022
+$finalHeight = 0
+#the pattern kept repeating every 1700 turns
+$rockModifier = 1700
+#the height was equal to 2623 over and over
+$heightModifier = 2623 * [math]::Floor($stopRock/$rockModifier)
+$fallingRocks = $stoprock - ($stopRock%$rockModifier)
+$finalHeight += $heightModifier
+
+#$stopRock = 2022
 
 $gridBottom = 0
 $gridTop = 0
@@ -24,12 +34,27 @@ $rockNumber = 0
 $startOver = $true
 $starting = $true
 $i = 0
-$fallingRocks = 0
+
 $count = 0
 $rockHeights = @{0=1;1=3;2=3;3=4;4=2}
 While ($fallingRocks -lt $stopRock) {
+#    if ($fallingRocks % 1000 -eq 0 ) {
+        Write-Progress -Activity "$fallingRocks of $stopRock" -PercentComplete ($count/$stopRock*100)
+#    }
+                ### The pattern this spits out helped determine the necessary numbers to use for modulus above
+                if ($rockNumber -eq 0 -and $i -eq 0) {
+                    $i
+                    for ($z = 0; $z -lt $grid.Length; $z++) {
+                        if ($grid[$z] -match "#") {
+                            break
+                        }
+                    }
+                    "Falling Rocks = $fallingrocks"
+                    "Grid size = $($grid.Length -$z + $finalHeight)"
+                    $grid[0..12] | % {$_ -join ''}
+                    ""
+                }
 
-    Write-Progress -Activity "$fallingRocks of $stopRock" -PercentComplete ($count/$stopRock*100)
     $rock = get-rock $rockNumber $x $y
     if ($startOver) {
         for ($z = 0; $z -lt $grid.Length; $z++) {
@@ -45,6 +70,11 @@ While ($fallingRocks -lt $stopRock) {
     }
     while ($grid.Length -1 -ne $gridBottom) {
         $grid = ,(0..6 | % {"."}) + $grid
+    }
+    if ($grid.Length -gt 150) {
+            $grid = $grid[0..($grid.Length-1-100)]
+        $finalheight+=100
+        $gridBottom-=100
     }
 
     $startOver = $false
@@ -86,14 +116,16 @@ While ($fallingRocks -lt $stopRock) {
 
     }
     else {
+
         $y = 0
         $startover = $true
-
+        $fallingRocks += 1
         foreach ($point in $rock) {
             $grid[$point[1]][$point[0]] = "#"
         }
-        $fallingRocks += 1
+
         $rockNumber = ($rockNumber+1) % 5
+
     }
 #    $grid | % {$_ -join ''}
 #    ""
@@ -108,6 +140,7 @@ While ($fallingRocks -lt $stopRock) {
     $i = ($i + 1) % $data.Length
 
 
+
 }
 
 
@@ -118,4 +151,5 @@ for ($z = 0; $z -lt $grid.Length; $z++) {
         break
     }
 }
-$grid.Length -$z
+$finalheight + $grid.Length -$z
+
