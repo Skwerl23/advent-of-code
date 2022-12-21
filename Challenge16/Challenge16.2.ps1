@@ -1,5 +1,7 @@
-﻿$data = Get-Content C:\Tools\advent2022\challenge16a.txt
+﻿$data = Get-Content C:\Tools\advent2022\challenge16.txt
 #$data = $data | sort
+### Finally got this working. Anyhow, it's not too slow now
+### the hashmap variant of visitedcombos is 100s of times faster. and sorting the list by value finds the answer fast
 <#
 $data = @("Valve AA has flow rate=0; tunnels lead to valves DD, II, BB"
 "Valve BB has flow rate=13; tunnels lead to valves CC, AA"
@@ -48,23 +50,14 @@ $maxtime = 0
 $script:maxPressure = 0
 $script:vispath = @()
 $script:visited = @{}
-$script:visitedCombos = @()
+$script:visitedCombos = @{}
 $script:visitedPath = [System.Collections.ArrayList]@()
-#$$script:visitedPath = New-Object System.Collections.ArrayList
-# Define a function for performing depth-first search
-function DepthFirstSearch($tree, $startNode, $timeRemaining) {
-    # Initialize an arraylist to store the path and the maximum pressure achieved so far
-    
-    
 
+function DepthFirstSearch($tree, $startNode, $timeRemaining) {
 
     # Recursive function for traversing the tree
     function Traverse($node, $time, $pressure) {
         if ($time -le 1) {return}
-        # Add the current node to the path
-#        $$script:visitedPath.Add($node)
-        
-        #write-host ($path -join ' ') + " $time"
         # Calculate the flow rate and time remaining if the current node is opened
         [int]$timeRemainingnow = $time #-1
         $flow = $valves[$node].flowrate
@@ -85,28 +78,15 @@ function DepthFirstSearch($tree, $startNode, $timeRemaining) {
        # foreach ($flow in $flowrate) {
             
             if ($flow -gt 0 -and ($script:visited[$node] -eq $null)) {
-                #$timeRemainingnow -=1
                 $pressureold = $pressure
                 $pressureChange = ($flow * [int]($timeRemainingnow))
-                $pressure += $pressureChange
+                [int]$pressure += $pressureChange
                 $script:visited[$node]=$timeRemainingnow
-                $local:nodeName = $node + ",$timeremainingnow"
+                $local:nodeName = $node 
 
                 $script:visitedPath.add($local:nodeName)| Out-Null
-                $script:visitedCombos += $script:visitedPath -join ' '
-#                if ($pressure -gt $script:maxPressure) {
-#                    $script:maxPressure = [math]::Max($pressure,$script:maxPressure)
-                    #write-host $visited.Keys
-#                    write-host "$pressureold, $pressure, $timeRemainingnow, $($script:visitedPath), ($flow * $timeRemainingnow)"
-                    
-#                $sum = 0
-#                foreach ($place in $script:visitedPath) {
-#                    $sum += $valves[$place.split(',')[0]].flowrate * [int]$place.split(',')[1]
-#                }
-                #write-host "Sum = $sum"
-                #write-host ""
-                    
-                #}
+
+                $script:visitedCombos[($script:visitedPath | sort) -join ' '] = [math]::max([int]$script:visitedCombos[($script:visitedPath | sort) -join ' '], $pressure)
                 $visitYes = $true
 
             }
@@ -119,9 +99,7 @@ function DepthFirstSearch($tree, $startNode, $timeRemaining) {
                 }
 
             }
-           # $pressure -= $pressurechange
             $script:visitedPath.Remove($local:nodeName)
-#            $timeRemainingnow+=1
 
             if ($visitYes) {
 
@@ -133,57 +111,46 @@ function DepthFirstSearch($tree, $startNode, $timeRemaining) {
                 $script:visited.remove($node)
             }
         
-       # }
-        # Remove the current node from the path
 
     }
 
     # Start the traversal at the start node
     Traverse $startNode $timeRemaining 0
 
-    # Return the maximum pressure achieved
-   # return $maxPressure
-}
-
-
-
-# Example function for getting the list of connected nodes
-function GetConnectedNodes($node) {
-    # Return a fixed list of connected nodes for demonstration purposes
-    return $valves[$node].connections
 }
 
 $maxsum = 0
+
 DepthFirstSearch $valves $startValve 26
-#Write-Output "Maximum pressure: $result"
-foreach ($combo in $script:visitedCombos) {
-    $combo = $combo.split()
-    foreach ($combo2 in $script:visitedCombos) {
-        $combo2 = $combo2.split()
+
+"We found this many combos"
+$script:visitedCombos.keys | measure | select -expand count
+
+$total = $script:visitedCombos.Count
+$count = 0
+foreach ($combo in $script:visitedCombos.GetEnumerator() | sort {$_.Value} -Descending | select -ExpandProperty key) {
+    $count++
+    if ($count % 50 -eq 0) {
+        Write-Progress -Activity "working $count of $total - highest sum found is $maxsum" -PercentComplete ($count/$total*100)
+    }
+    $comboCheck = $combo.split()
+    foreach ($combo2 in $script:visitedCombos.GetEnumerator() | sort {$_.Value} -Descending | select -ExpandProperty key) {
+        if ($visitedCombos[$combo2] + $visitedCombos[$combo] -lt $maxsum) {break} 
+        $combo2Check = $combo2.split()
         $fail = $false
-        foreach ($item in $combo) {
-            if ($combo2 -match $item.Split(',')[0]) {
-                $fail = $true
-                break
-            }
+        if ((Compare-Object $combo2Check $comboCheck -IncludeEqual -ExcludeDifferent | select -expand sideindicator )) {
+            $fail = $true
         }
         if (!$fail) {
-            $sum = 0
-            foreach ($item in $combo) {
-                $sum += $valves[$item.split(',')[0]].flowrate * [int]$item.split(',')[1]
-            }
 
-            foreach ($item in $combo2) {
-                $sum += $valves[$item.split(',')[0]].flowrate * [int]$item.split(',')[1]
-            }
-            $maxsum = [math]::Max($sum, $maxsum)
+            $maxsum = [math]::Max($visitedCombos[$combo2] + $visitedCombos[$combo], $maxsum)
         }
     }
 
 }
 
 
-
+#### You can let this run to the end, but after 1-200 rounds it's basically done due to the nature of the sorting.
 $maxsum
 
 
