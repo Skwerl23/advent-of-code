@@ -1,4 +1,15 @@
-﻿### There must be a more accurate way to do this, I sort of intelligently brute force it by going up and down one digit at a time until i hone in on the answer.
+### There must be a more accurate way to do this, I sort of intelligently brute force it by going up and down one digit at a time until i hone in on the answer.
+### After looking at other solutions, people did a binary search. which is sort of like what i did. 
+#### Binary search goes by trying splitting the difference. so for example if the answer is 37 a binary search would do this:
+### start with 0 and 100. if 50 is too high, set 100 to 50. now try 25. it's too low, set 0 to 25. now try 37. (half way 25-50) it's too high. and so on
+### What i did was try most significant bit, if not high enough add 1. try again, if too high, subtract 1 and move down a tens place. for example
+### if 1000 is too low, try 2000. if 2000 is too high, try 2000-1000+100 or 1100. too low, try 1200..1300..1400 oh too high, now try 1310 etc...
+### obviously the binary search is faster.
+### out of a trillion we'd cut it to 500b then 250b then 125 b and so on. but thats 3 moves.
+### my method cuts 1trillion to 900b then 800b and has to try an average of 5 per place. so 70 tries on average, but could be 24 tries and could be 132 tries.
+###splitting in half... means it takes 40 tries every time no matter what
+### my method took approx 72 tries for my answer. if you have lower numbers say 3 digits it takes 10 tries, where my method takes 17.
+###so binary search seems to always be faster in terms of statistics. 
 ### Maybe this doesn't work in all scenarios. You may need to reverse the check signs. for the root equality response
 $data = Get-Content C:\Tools\advent2022\Challenge21.txt
 $data = $data.replace("root: wdzt + dffc","root: wdzt = dffc")
