@@ -1,3 +1,4 @@
+Measure-Command {
 $rules = cat C:\Tools\advent2022\challenge5.txt
 
 $stacks = $rules[0..8]
@@ -31,3 +32,4 @@ $answer = foreach ($x in 1..9) {
     (get-Variable a$x -ValueOnly)[-1]
 }
 $answer -join ''
+}

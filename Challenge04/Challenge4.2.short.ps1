@@ -1,4 +1,5 @@
-﻿$ranges = cat C:\Tools\advent2022\challenge4.txt
+﻿Measure-Command {
+$ranges = cat C:\Tools\advent2022\challenge4.txt
 $count = 0
 foreach ($line in $ranges) {
     $a,$b,$c,$d = $line.split('-,')
@@ -12,4 +13,5 @@ foreach ($line in $ranges) {
     }
     $count += $z
 }
-$count
+write-host $count
+}

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>advent_of_code_2022</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+   <folder Include="Challenge01" />
+   <folder Include="Challenge02" />
+   <folder Include="Challenge03" />
+   <folder Include="Challenge04" />
+   <folder Include="Challenge05" />
+   <folder Include="Challenge06" />
+   
+  </ItemGroup>
+
+</Project>
