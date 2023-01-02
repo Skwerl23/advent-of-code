@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Diagnostics;
 
-namespace Year22.Day04
+namespace Year22
 {
-    public class Challenge {
-        public static void Day04 () {
+    public class Day04 {
+        public static void Run () {
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
             List<string> ranges = File.ReadAllLines(@"C:\tools\advent2022\Challenge4.txt").ToList();

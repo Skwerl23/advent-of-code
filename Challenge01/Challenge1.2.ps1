@@ -1,4 +1,6 @@
-﻿Measure-Command {
+﻿### This answers both, challenge 1 and 2, as well as give the runtime in MilliSeconds
+
+Measure-Command {
 $calories = cat C:\tools\advent2022\challenge1.txt
 $calores = $calories + ""
 $sum = 0
@@ -18,7 +20,7 @@ $sum = 0
 foreach ($a in ($elves | sort | select -last 3)) {
     $sum += $a
 }
-$maxsum
-$sum
+write-host "Answer 1 = $maxsum"
+write-host "Answer 2 = $sum"
 
-}
+} | select @{N="Milliseconds Run Time"; E={$_.TotalMilliseconds}}

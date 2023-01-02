@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Diagnostics;
 
-namespace Year22.Day01
+namespace Year22
 {
-    public class Challenge {
-        public static void Day01 () {
+    public class Day01 {
+        public static void Run () {
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
 

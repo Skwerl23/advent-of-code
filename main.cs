@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace AOC
 {
-    class Run {
+    class Program {
         static void Main () {
             Console.WriteLine("What year? (blank for 22)");
             string year = Console.ReadLine()!;
@@ -22,11 +22,11 @@ namespace AOC
             }
             day = day.PadLeft(2, '0');
             day = day.Substring(day.Length - 2);
-            string className = "Year" + year + ".Day" + day + ".Challenge";
+            string className = "Year" + year + ".Day" + day;
             className = className.Trim();
             // You have to add ! at the end to make it null forgiving since it'll never be null if used right.
             Type type = Type.GetType(className)!;
-            MethodInfo method = type.GetMethod("Day" + day)!;
+            MethodInfo method = type.GetMethod("Run")!;
             method.Invoke(null, null);
         }
     }
