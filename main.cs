@@ -27,7 +27,10 @@ namespace AOC
             // You have to add ! at the end to make it null forgiving since it'll never be null if used right.
             Type type = Type.GetType(className)!;
             MethodInfo method = type.GetMethod("Run")!;
+            Console.WriteLine("Calculating");
+
             method.Invoke(null, null);
+
         }
     }
 }

@@ -31,5 +31,5 @@ foreach ($m in $moves) {
 $answer = foreach ($x in 1..9) {
     (get-Variable a$x -ValueOnly)[-1]
 }
-$answer -join ''
-}
+write-host "Answer 1 = $($answer -join '')"
+}  | select @{N="Milliseconds Run Time"; E={$_.TotalMilliseconds}}
