@@ -1,4 +1,5 @@
-﻿Measure-Command {
+﻿#Took 450-500ms to run
+Measure-Command {
 $ranges = cat C:\Tools\advent2022\challenge4.txt
 $count1 = 0
 $count2 = 0
@@ -23,5 +24,4 @@ foreach ($line in $ranges) {
 write-host "Answer 1 = $count1"
 write-host "Answer 2 = $count2"
 
-} | select @{N="Milliseconds Run Time"; E={$_.TotalMilliseconds}}
-
+} | select @{N="Elapsed Time in Milliseconds"; E={$_.TotalMilliseconds}}

@@ -1,4 +1,6 @@
-﻿Measure-Command {
+﻿#Took 7285 ms to run
+
+Measure-Command {
 $rucksacks = cat C:\Tools\advent2022\challenge3.txt
 $valuecount = 0
 $letters = [System.Collections.ArrayList]@("a","b","c","d","e","f","g","h","i","j","k",
@@ -32,4 +34,4 @@ foreach ($ruck in (0..(($rucksacks.count/3) - 1))) {
 
 write-host "Answer 2 = $valuecount"
 
-} | select @{N="Milliseconds Run Time"; E={$_.TotalMilliseconds}}
+} | select @{N="Elapsed Time in Milliseconds"; E={$_.TotalMilliseconds}}

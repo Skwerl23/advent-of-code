@@ -9,7 +9,7 @@ namespace Year22
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
 
-
+            // Took about 5.8ms to run or about 34x faster than Powershell
             List<string> calories = File.ReadAllLines(@"C:\tools\advent2022\Challenge1.txt").ToList();
 
             calories.Add("");

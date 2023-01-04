@@ -8,6 +8,7 @@ namespace Year22
         public static void Run () {
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
+            //Took around 6.2ms to run or about 72x faster than powershell
             List<string> ranges = File.ReadAllLines(@"C:\tools\advent2022\Challenge4.txt").ToList();
             int count1 = 0;
             int count2 = 0;

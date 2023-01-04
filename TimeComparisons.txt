@@ -1,0 +1,28 @@
+This file just lists the approx time boosts gained from CPowerShell:  over Powershell
+
+Please note times are based on my machine I ran it on at this time, and the best I saw
+They are not averaged over time, or in ideal conditions just approximations. The wild range of performance is interesting
+
+Day01
+c#:  Took about 5.8ms to run or about 34x faster than Powershell
+PowerShell:  took 60ms to run
+
+Day02
+c#: took around 4.8ms to run or about 12-13x faster than Powershell. (hashmaps, go figure)
+PowerShell: Took 60-100ms to run
+
+Day03
+c#:  Took around 7.1ms to run or about 680x faster than Powershell
+PowerShell: Took 7285 ms to run
+
+Day04
+c#: Took around 6.2ms to run or about 72x faster than powershell
+PowerShell: Took 450-500ms to run
+
+Day05
+c#: took around 8ms to run or approx 25x faster than Powershell
+PowerShell: Took 200ms to run
+
+Day06
+c#:  Took 13 ms to run or about 120x faster than Powershell
+PowerShell: Took about 1560 ms to run

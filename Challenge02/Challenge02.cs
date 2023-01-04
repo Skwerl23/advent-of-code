@@ -8,6 +8,7 @@ namespace Year22
         public static void Run () {
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
+            //took around 4.8ms to run or about 12-13x faster than Powershell. (hashmaps, go figure)
             string[] games = File.ReadAllLines(@"C:\Tools\advent2022\challenge2.txt").ToArray();
             int score = 0;
             int score2 = 0;

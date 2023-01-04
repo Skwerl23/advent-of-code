@@ -1,4 +1,5 @@
-﻿Measure-Command {
+﻿#Took 60-100ms to run
+Measure-Command {
 $games = cat C:\Tools\advent2022\challenge2.txt
 $score = 0
 $score2 = 0
@@ -21,4 +22,4 @@ foreach ($round in $games) {
 }
 write-host "Answer 1 = $score"
 write-host "Answer 2 = $score2"
-} | select @{N="Milliseconds Run Time"; E={$_.TotalMilliseconds}}
+} | select @{N="Elapsed Time in Milliseconds"; E={$_.TotalMilliseconds}}

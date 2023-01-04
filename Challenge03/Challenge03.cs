@@ -8,7 +8,7 @@ namespace Year22 {
 
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
-
+            // Took around 7.1ms to run or about 680x faster than Powershell
             List<string> rucksacks = File.ReadAllLines(@"C:\Tools\advent2022\challenge3.txt").ToList();
             int valuecount = 0;
             List<char> letters = new List<char>()
