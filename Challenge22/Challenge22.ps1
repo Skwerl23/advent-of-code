@@ -3,7 +3,7 @@
 $data = cat C:\Tools\advent2022\Challenge22a.txt 
 #uncomment the else statements for a trail of X's, it does eventually break the script
 # but it is very useful for trail hunting. 
-
+## Part 2 can't use this sample data, as it's based on a 50x50 cube - not 4x4, and i don't have it auto figure it out.
 <#
 $data = @(
 "        ...#"

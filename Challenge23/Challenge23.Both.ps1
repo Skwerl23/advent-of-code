@@ -1,4 +1,6 @@
-﻿Measure-Command {
+﻿# This took around 351000 milliseconds
+
+Measure-Command {
 $data = cat 'C:\Tools\advent2022\Challenge23.txt'
 <#
 $data = @(
