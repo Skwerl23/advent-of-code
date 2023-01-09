@@ -26,3 +26,8 @@ PowerShell: Took 200ms to run
 Day06
 c#:  Took 13 ms to run or about 120x faster than Powershell
 PowerShell: Took about 1560 ms to run
+
+
+Day23
+C#: took 18,500ms to run or about 19x faster than powershell
+Powershell: Took about 351,000 ms to run

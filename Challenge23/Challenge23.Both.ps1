@@ -1,4 +1,5 @@
-﻿$data = cat 'C:\Tools\advent2022\Challenge23.txt'
+﻿Measure-Command {
+$data = cat 'C:\Tools\advent2022\Challenge23.txt'
 <#
 $data = @(
 "....#.."
@@ -197,3 +198,5 @@ while ((($gridLeft | % {$_ -join ''} ) -join '') -ne (($gridright | % {$_ -join 
     Write-Progress -PercentComplete 1 -Activity "Unknown quantity done, but just finished round $round"
 }
 "Answer for Part 2 is $round"
+
+} | select @{N="Milliseconds to Calculate";E={$_.TotalMilliseconds}}
