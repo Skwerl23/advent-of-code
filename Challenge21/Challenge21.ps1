@@ -3,6 +3,10 @@
 
 # The old method took around 869946 milliseconds
 # udpdating to binary search took 596809 milliseconds - about a 31% reduction
+# update again, removed all "no longer used" values from data by eliminating any one time appearance names (no formulas use that value)
+#this time it finished in 97000 milliseconds that is an 84% reduction from the previous 31% reduction
+# same trick reduced the c# by 60% again. 
+#final powershell time took 
 
 Measure-Command {
 
@@ -53,12 +57,16 @@ function calculateValue ([double]$left, [double]$right, [string]$sign) {
 $erroractionpreference = "SilentlyContinue"
 $count=0
 while (($data -match "root:").Split().length -gt 2){
-    $count++ 
+    $count++
+
     for ($i=0; $i -lt $data.Length; $i++) {
         $left = $right = $sign = $null
         $sign = $data[$i].split(':')[1].split()[2]
+        $name = $data[$i].split(':')[0]
+        if (($data -match $name).count -eq 1 -and $name -ne "root" -and $name -ne "humn") {
+            $data[$i] = ""
+        }
         if ($sign) {
-            $name = $data[$i].split(':')[0]
             $left = $data[$i].split(':')[1].split()[1]
             $right = $data[$i].split(':')[1].split()[-1]
             $continue = $true
@@ -89,7 +97,7 @@ while (($data -match "root:").Split().length -gt 2){
 
 
     }    
-
+    $data = $data | where {$_ -ne ""}
 }
 
 $answer1 = $data -match "root:"
@@ -133,9 +141,14 @@ while ( !($data -match $pattern)) {
             $data[$index] = "humn: " + $testValue
         }
     }
+
     for ($i=0; $i -lt $data.Count; $i++) {
         if (!$dataminimized) {
             if ($data[$i].Contains("humn")) {continue}
+        }
+            $name = $data[$i].Split(':')[0]
+        if (($data -match $name).count -eq 1 -and $name -ne "root" -and $name -ne "humn") {
+            $data[$i] = ""
         }
 
         if ($data[$i].split(' ').Length -gt 2) {
@@ -144,7 +157,6 @@ while ( !($data -match $pattern)) {
             $right = ""
             $leftLong = "blank"
             $rightLong = "blank"
-            $name = $data[$i].Split(':')[0]
             $left = $data[$i].Split(':')[1].Split(' ')[1]
             $right = $data[$i].Split(':')[1].Split(' ')[-1]
             if ($left -match '\d' -and $right -match '\d' -and $name -ne "root") {
@@ -205,7 +217,7 @@ while ( !($data -match $pattern)) {
             $data[$i] = "$($name): $answer"
         }
     }
-
+    $data = $data | where {$_ -ne ""}
 
 }
 write-host "answer 2 = $testValue"

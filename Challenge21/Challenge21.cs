@@ -41,6 +41,8 @@ stopwatch.Start();
             //This was reduced by 60% by calculating the combined values if possible,
             //instead of setting both values and leaving the symbol that way required double loops per line
             //powershell was only reduced by 31% sadly. 
+            //one final tweek removed the excess data lines, so it only loops through code it has to calculate. this reduced it even further around another 60%
+            //final time was 2200 ms
             List<string> data = File.ReadAllLines(@"C:\Tools\advent2022\Challenge21.txt").ToList();
             int count=0;
             string pattern = @"^root:\s\d+$";
@@ -77,16 +79,15 @@ stopwatch.Start();
                     right = "";                    
                     leftLong = "blank";
                     rightLong = "blank";
+                    name = data[i].Split(':')[0];
+                    if (data.Count(x => x.Contains(name)) == 1 && name != "root" && name != "humn") {
+                        data[i] = "";
+                    }
 
                     // determine if we have a sign
                     if (data[i].Split(' ').Length > 2) {
                         sign = data[i].Split(':')[1].Split(' ')[2];
-                    }
-                    else {sign = "";}
-                    //if there's a sign, we will work with the 2 values
-                    if (sign != "") {
                         //the main name we're at is assigned, then the left and right values
-                        name = data[i].Split(':')[0];
                         left = data[i].Split(':')[1].Split(' ')[1];
                         right =data[i].Split(':')[1].Split(' ').Last();
                         moveOn = true;
@@ -139,6 +140,7 @@ stopwatch.Start();
 
 
                 }
+                data.RemoveAll(string.IsNullOrEmpty);
             }
 
             string answer1 = data.Find(s => Regex.IsMatch(s, "root:"))!;
@@ -176,13 +178,18 @@ stopwatch.Start();
                 //start loop to go through each value in the list of work
                 testValue = Math.Round((humanMax + humanMin) / 2);
                 if (dataminimized) {
-                    int index = data.FindIndex(s => s.Contains("humn: "));
+                    int index = data.FindIndex(s => s.Contains("humn:"));
                     data[index] = "humn: " + testValue.ToString();
                 }
+
                 for (int i=0; i < data.Count; i++) {
                     //reset values for left and right
                     if (!dataminimized) {
                         if (data[i].Contains("humn")) {continue;}
+                    }
+                    name = data[i].Split(':')[0];
+                    if (data.Count(x => x.Contains(name)) == 1 && name != "root" && name != "humn") {
+                        data[i] = "";
                     }
                     // determine if we have a sign
                     if (data[i].Split(' ').Length > 2) {
@@ -192,7 +199,6 @@ stopwatch.Start();
                         leftLong = "blank";
                         rightLong = "blank";
                         //the main name we're at is assigned, then the left and right values
-                        name = data[i].Split(':')[0];
                         left = data[i].Split(':')[1].Split(' ')[1];
                         right =data[i].Split(':')[1].Split(' ').Last();
                         moveOn = true;
@@ -269,6 +275,8 @@ stopwatch.Start();
 
 
                 }
+                data.RemoveAll(string.IsNullOrEmpty);
+
             }
             Console.WriteLine("Answer to 2 = " + answer);
 
