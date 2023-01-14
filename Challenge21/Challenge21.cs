@@ -7,7 +7,7 @@ namespace Year22
 {
     public class Day21 {
 
-        private static ulong calculateValue (ulong left, ulong right, char sign) {
+        private static double calculateValue (double left, double right, char sign) {
                 if (sign == '+') {
                     return left+right;
                 }
@@ -36,8 +36,11 @@ namespace Year22
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
 
-            //took around 26513 ms to run or approx 32x faster than Powershell
-            //this is using a different search algorithm.
+            //took around 9578 ms to run or approx 32x faster than Powershell
+            //powerShell hasn't been calculated, as it's not workin at the moment
+            //This was reduced by 60% by calculating the combined values if possible,
+            //instead of setting both values and leaving the symbol that way required double loops per line
+            //powershell was only reduced by 31% sadly. 
             List<string> data = File.ReadAllLines(@"C:\Tools\advent2022\Challenge21.txt").ToList();
             int count=0;
             string pattern = @"^root:\s\d+$";
@@ -46,14 +49,14 @@ stopwatch.Start();
             string leftLong;
             string rightLong;
             string answer = "";
-            ulong tempLonga;
-            ulong tempLongb;
+            double tempLonga;
+            double tempLongb;
             string sign;
             bool moveOn;
             string name;
             string tempLeft;
             string tempRight;
-            ulong result;
+            double result;
             char tempCharA;
             bool leftCheck;
             bool rightCheck;
@@ -90,8 +93,8 @@ stopwatch.Start();
                         tempLonga = 0;
                         tempLongb = 0;
                         //try to parse left and right values, if they are numbers, we calculate them
-                        leftCheck = ulong.TryParse(left, out tempLonga);
-                        rightCheck = ulong.TryParse(right, out tempLongb);
+                        leftCheck = double.TryParse(left, out tempLonga);
+                        rightCheck = double.TryParse(right, out tempLongb);
                         if (leftCheck && rightCheck) {
                             tempCharA = sign.ToCharArray()[0];
                             
@@ -103,7 +106,7 @@ stopwatch.Start();
                                 tempLeft = "^" + left + ":";
                                 tempLeft = data.Find(s => Regex.IsMatch(s, tempLeft))!;
                                 if (tempLeft.Split(' ').Length == 2) {
-                                    if ( ulong.TryParse(tempLeft.Split(' ')[1], out result) ) {
+                                    if ( double.TryParse(tempLeft.Split(' ')[1], out result) ) {
                                         leftLong = result.ToString();
                                     }
                                 }
@@ -113,7 +116,7 @@ stopwatch.Start();
                                 tempRight = data.Find(s => Regex.IsMatch(s, tempRight))!;
 
                                 if (tempRight.Split(' ').Length == 2) {
-                                    if ( ulong.TryParse(tempRight.Split(' ')[1], out result) ) {
+                                    if ( double.TryParse(tempRight.Split(' ')[1], out result) ) {
                                         rightLong = result.ToString();
                                     }
                                 }
@@ -149,52 +152,45 @@ stopwatch.Start();
             List<string> dataOld = new List<string> {""};
             bool dataminimized = false;
             //anything bigger than this number breaks c#
-            ulong humanMax = 10000000000000;
-            ulong humanMin = 0;
+            double humanMax = 10000000000000;
+            double humanMin = 0;
             bool restart;
-            ulong testValue = 0;
+            double testValue = 0;
+            int trials = 0;
             while( ! data.Exists(s => Regex.IsMatch(s, pattern)))
             {
                 //     Console.WriteLine();
                 // foreach (string line in data) {
                 //     Console.WriteLine(line);
                 // }
-                if (dataOld.SequenceEqual(data) && !dataminimized) {dataminimized = true;}
-                
-                if (data.Count(x => x.Contains("humn")) == 2 && !dataminimized) {
-                    dataOld = new List<string>(data);
+                if (!dataminimized) { 
+                    if (dataOld.SequenceEqual(data)) {dataminimized = true;}
+                    
+                    if (data.Count(x => x.Contains("humn")) == 2) {
+                        dataOld = new List<string>(data);
+                    }
                 }
                 restart = false;
                 // increment count 
                 count++;
-                //initialize VARIABLES
-                left = "";
-                right = "";
-                leftLong = "blank";
-                rightLong = "blank";
                 //start loop to go through each value in the list of work
-                testValue = ((humanMax + humanMin) / 2);
+                testValue = Math.Round((humanMax + humanMin) / 2);
                 if (dataminimized) {
-//                    Console.WriteLine(testValue + " " + humanMin + " " + humanMax);
                     int index = data.FindIndex(s => s.Contains("humn: "));
                     data[index] = "humn: " + testValue.ToString();
                 }
                 for (int i=0; i < data.Count; i++) {
                     //reset values for left and right
-                    left = "";
-                    right = "";                    
-                    leftLong = "blank";
-                    rightLong = "blank";
                     if (!dataminimized) {
                         if (data[i].Contains("humn")) {continue;}
                     }
                     // determine if we have a sign
                     if (data[i].Split(' ').Length > 2) {
                         sign = data[i].Split(':')[1].Split(' ')[2];
-                    }
-                    else {sign = "";}
-                    //if there's a sign, we will work with the 2 values
-                    if (sign != "") {
+                        left = "";
+                        right = "";
+                        leftLong = "blank";
+                        rightLong = "blank";
                         //the main name we're at is assigned, then the left and right values
                         name = data[i].Split(':')[0];
                         left = data[i].Split(':')[1].Split(' ')[1];
@@ -204,20 +200,19 @@ stopwatch.Start();
                         tempLongb = 0;
                         //try to parse left and right values, if they are numbers, we calculate them
                         
-                        leftCheck = ulong.TryParse(left, out tempLonga);
-                        rightCheck = ulong.TryParse(right, out tempLongb);
+                        leftCheck = double.TryParse(left, out tempLonga);
+                        rightCheck = double.TryParse(right, out tempLongb);
                         if (leftCheck && rightCheck && name != "root") {
                             tempCharA = sign.ToCharArray()[0];
                             
                             answer = calculateValue(tempLonga, tempLongb, tempCharA).ToString();
-                            moveOn = false;
                         }
-                        if (moveOn) {
+                        else {
                             if (tempLonga == 0) {
                                 tempLeft = "^" + left + ":";
                                 tempLeft = data.Find(s => Regex.IsMatch(s, tempLeft))!;
                                 if (tempLeft.Split(' ').Length == 2) {
-                                    if ( ulong.TryParse(tempLeft.Split(' ')[1], out result) ) {
+                                    if ( double.TryParse(tempLeft.Split(' ')[1], out result) ) {
                                         leftLong = result.ToString();
                                     }
                                 }
@@ -227,28 +222,28 @@ stopwatch.Start();
                                 tempRight = data.Find(s => Regex.IsMatch(s, tempRight))!;
 
                                 if (tempRight.Split(' ').Length == 2) {
-                                    if ( ulong.TryParse(tempRight.Split(' ')[1], out result) ) {
+                                    if ( double.TryParse(tempRight.Split(' ')[1], out result) ) {
                                         rightLong = result.ToString();
                                     }
                                 }
                             } else {rightLong = tempLongb.ToString();}
                             if (leftLong != "blank" && rightLong != "blank") {
-                                if (name == "root" && calculateValue(ulong.Parse(leftLong), ulong.Parse(rightLong), '=') == 0) {
+                                if (name == "root" && calculateValue(double.Parse(leftLong), double.Parse(rightLong), '=') == 0) {
                                     answer = testValue.ToString();
                                 }
-                                else if (name == "root" && calculateValue(ulong.Parse(leftLong), ulong.Parse(rightLong), '=') == 1) {
+                                else if (name == "root" && calculateValue(double.Parse(leftLong), double.Parse(rightLong), '=') == 1) {
                                     humanMax = testValue;
                                     data = new List<string>(dataOld);
                                     restart = true;
                                 }
-                                else if (name == "root" && calculateValue(ulong.Parse(leftLong), ulong.Parse(rightLong), '=') == 2) {
+                                else if (name == "root" && calculateValue(double.Parse(leftLong), double.Parse(rightLong), '=') == 2) {
                                     humanMin = testValue;
                                     data = new List<string>(dataOld);
                                     restart = true;
                                 }
 
                                 else {
-                                    answer = leftLong + " " + sign  + " " + rightLong;
+                                    answer = calculateValue(double.Parse(leftLong), double.Parse(rightLong), char.Parse(sign)).ToString(); //leftLong + " " + sign  + " " + rightLong;
                                 }
 
                             }
@@ -262,8 +257,14 @@ stopwatch.Start();
                                 answer = left + " " + sign + " " + right;
                             }
                         }
-                        if (restart) {continue;}
+                        if (restart) {
+                            trials++;
+                            //it takes 41 or so rounds, this helps see time
+//                            Console.WriteLine("Finished Round " + trials);
+                            break;
+                        }
                         data[i] = name + ": " + answer;
+
                     }
 
 
