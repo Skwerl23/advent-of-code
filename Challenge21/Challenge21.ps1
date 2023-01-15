@@ -6,7 +6,7 @@
 # update again, removed all "no longer used" values from data by eliminating any one time appearance names (no formulas use that value)
 #this time it finished in 97000 milliseconds that is an 84% reduction from the previous 31% reduction
 # same trick reduced the c# by 60% again. 
-#final powershell time took 
+#final powershell time took 101197 ms as low as 97k so well do 100k
 
 Measure-Command {
 

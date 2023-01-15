@@ -42,7 +42,7 @@ stopwatch.Start();
             //instead of setting both values and leaving the symbol that way required double loops per line
             //powershell was only reduced by 31% sadly. 
             //one final tweek removed the excess data lines, so it only loops through code it has to calculate. this reduced it even further around another 60%
-            //final time was 2200 ms
+            //final time was 2200 ms or 45x faster than powershell, even though i reduced powershell 90% c# just reduced far superiorly.
             List<string> data = File.ReadAllLines(@"C:\Tools\advent2022\Challenge21.txt").ToList();
             int count=0;
             string pattern = @"^root:\s\d+$";

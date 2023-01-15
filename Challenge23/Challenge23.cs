@@ -1,6 +1,9 @@
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace Year22
 {
@@ -72,6 +75,7 @@ namespace Year22
         }
 
         //create function to perform actual move updates
+
         private static void moveDo (int i, int j, int round, ref char[,] gridRight) {
 
                 //if the move is available make it this is dependent on round number aswell
