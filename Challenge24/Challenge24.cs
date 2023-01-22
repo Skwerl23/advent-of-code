@@ -59,10 +59,19 @@ stopwatch.Start();
             //took around xxx 
 
 List<string> data = File.ReadAllLines(@"C:\Tools\advent2022\Challenge24.txt").ToList();
-
         int width = data[0].Length;
         int height = data.Count;
+        int[,] positions = new int[data.Count, width];
         int[,] grid = new int[data.Count, width];
+        
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                positions[i,j] = 0;
+            }
+        }
+        positions[0,1] = 1;
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -94,13 +103,76 @@ List<string> data = File.ReadAllLines(@"C:\Tools\advent2022\Challenge24.txt").To
             }
         }
         int[,] gridTwo = (int[,])grid.Clone();
-
+    int rounds = -1;
+    int start = 0;
+    int end=1;
     while (true) {
-        Console.WriteLine("starting new grid");
+        rounds++;
+//        Console.WriteLine("starting new grid");
         grid = (int[,])gridTwo.Clone();
+
+        int[,] tempPositions = (int[,])positions.Clone();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (positions[i,j] == 1) {
+                    if (grid[i,j] == 0) {tempPositions[i,j] = 1;}
+                    else  {tempPositions[i,j] = 0;}
+                    int[] vNeighbors = {i-1,i+1};
+                    foreach (int position in vNeighbors) {
+                        if (0<= position && position < height) {
+                            if (grid[position, j] == 0) {
+                                tempPositions[position,j] = 1;
+                            }
+                            else  {tempPositions[position,j] = 0;}
+                        }
+                    }
+                    int[] hNeighbors = {j-1,j+1};
+                    foreach (int position in hNeighbors) {
+                        if (0<= position && position < width) {
+                            if (grid[i, position] == 0) {
+                                tempPositions[i,position] = 1;
+                            }
+                            else  {tempPositions[i,position] = 0;}
+                        }
+                    }
+                }
+            }
+        }
+        positions = (int[,])tempPositions.Clone();
+        if (positions[height-1,width-2] == 1 && start != 1) {
+            Console.WriteLine("Answer " + end + " is " + rounds);
+            start = 1;
+            if (end == 2) {break;}
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    positions[i,j] = 0;
+                }
+            }
+            positions[height-1,width-2] = 1;
+
+        }
+        if (start == 1 && positions[0,1] == 1) {
+            end = 2;
+            start = 0;
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    positions[i,j] = 0;
+                }
+            }
+            positions[0,1] = 1;
+
+        }
         gridTwo = drawEmptyGrid(data);
-        drawGrid(grid);
-        Thread.Sleep(1000);
+        // drawGrid(positions);
+        // Thread.Sleep(1000);
+        // drawGrid(grid);
+        // Console.WriteLine();
 
 for (int i = 0; i < data.Count; i++)
 {
@@ -147,6 +219,7 @@ for (int i = 0; i < data.Count; i++)
 
     }
 }
+//still inside while loop
 
 
     }
